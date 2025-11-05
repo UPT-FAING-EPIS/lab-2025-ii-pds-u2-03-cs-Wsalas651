@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version (semver, e.g. 0.1.1)'
+        description: 'Version (semver, e.g. 1.0.1)'
         required: true
   push:
     tags:
@@ -28,22 +28,24 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-            dotnet-version: 8.0.x
+          dotnet-version: 8.0.x
 
       - name: Determine version
         id: v
         run: |
           if [ -n "${{ github.event.inputs.version }}" ]; then
-            echo "ver=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+            ver=${{ github.event.inputs.version }}
           else
             tag=${GITHUB_REF#refs/tags/}
-            echo "ver=${tag#v}" >> $GITHUB_OUTPUT
+            ver=${tag#v}   # elimina la 'v' inicial del tag
           fi
+          echo "Setting version to $ver"
+          echo "ver=$ver" >> $GITHUB_OUTPUT
+          echo "ver=$ver" >> $GITHUB_ENV   # 🔹 agrega compatibilidad entre steps
 
       - name: Update csproj version
         run: |
-          ver=${{ steps.v.outputs.ver }}
-          echo "Setting version to $ver"
+          echo "Updating version in ${{ matrix.project }} to $ver"
           sed -i "s#<Version>.*</Version>#<Version>$ver</Version>#" ${{ matrix.project }}
           grep -n "<Version>" ${{ matrix.project }}
 
@@ -51,13 +53,13 @@ jobs:
         run: dotnet build ${{ matrix.project }} -c Release
 
       - name: Pack
-        run: dotnet pack ${{ matrix.project }} -c Release -o out /p:PackageVersion=${{ steps.v.outputs.ver }} /p:Version=${{ steps.v.outputs.ver }}
+        run: dotnet pack ${{ matrix.project }} -c Release -o out /p:PackageVersion=$ver /p:Version=$ver
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.v.outputs.ver }}
-          name: Release v${{ steps.v.outputs.ver }}
+          tag_name: v${{ env.ver }}
+          name: Release v${{ env.ver }}
           draft: false
           prerelease: false
           files: |
