@@ -1,0 +1,163 @@
+name: Package and Publish NuGet
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  # ✅ Rutas de las soluciones (usadas para restaurar y compilar la solución completa)
+  SOLUTION_FILES: |
+    ATM/ATM.sln
+    Payment/Payment.sln
+
+  # Proyectos de dominio que serán empaquetados y analizados
+  DOMAIN_PROJECTS: |
+    ./ATM/ATM.Domain/ATM.Domain.csproj
+    ./Payment/Payment.Domain/Payment.Domain.csproj
+
+  # Proyectos de prueba (usados para ejecutar los tests)
+  TEST_PROJECTS: |
+    ./ATM/ATM.Domain.Tests/ATM.Domain.Tests.csproj
+    ./Payment/Payment.Domain.Tests/Payment.Domain.Tests.csproj
+
+  # Configuración de SonarCloud
+  SONAR_PROJECT_KEY: 72943816s_si889-u2lab02
+  SONAR_ORGANIZATION: 72943816s
+
+jobs:
+  # -----------------------------------------------------------
+  # JOB 1: sonar-analysis (Análisis de Calidad y Cobertura)
+  # -----------------------------------------------------------
+  sonar-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository (Fetch Depth 0 for Sonar)
+        uses: actions/checkout@v4
+        with:
+          # Necesario para el análisis de historial de commits de SonarCloud
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      # PASO 1A: Restaura dependencias de AMBAS soluciones
+      - name: Restore ALL Solution Dependencies
+        run: |
+          echo "Restoring dependencies for all solution files..."
+          echo "${{ env.SOLUTION_FILES }}" | while read sln_file; do
+            if [ -n "$sln_file" ]; then
+              echo "Restoring: $sln_file"
+              dotnet restore "$sln_file"
+            fi
+          done
+
+      - name: Install SonarCloud Scanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      # PASO 1B: BEGIN: Inicializa el análisis (SonarScanner monitorea MSBuild a partir de aquí)
+      - name: Start SonarCloud Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          export PATH="$PATH:$HOME/.dotnet/tools"
+
+          dotnet sonarscanner begin \
+            /k:"${{ env.SONAR_PROJECT_KEY }}" \
+            /o:"${{ env.SONAR_ORGANIZATION }}" \
+            /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.cs.opencover.reportsPaths="**/TestResults/coverage/coverage.xml"
+
+      # ✅ PASO 2: BUILD: Compila las soluciones (crítico para generar metadatos)
+      - name: Build Projects for Sonar Analysis (Monitored by Scanner)
+        run: |
+          echo "Building all projects for SonarScanner..."
+          echo "${{ env.SOLUTION_FILES }}" | while read sln_file; do
+            if [ -n "$sln_file" ]; then
+              echo "Building: $sln_file"
+              # Usamos --no-restore ya que el paso anterior ya lo hizo
+              dotnet build "$sln_file" --no-restore --configuration Release
+            fi
+          done
+
+      # PASO 3: RUN TESTS: Ejecuta las pruebas y genera cobertura
+      - name: Run Tests and Generate Coverage Report
+        run: |
+          echo "Running tests and generating OpenCover report..."
+          echo "${{ env.TEST_PROJECTS }}" | while read project_path; do
+            if [ -n "$project_path" ]; then
+              echo "Testing: $project_path"
+              # Configuración de Coverlet para generar el formato XML que SonarCloud espera
+              dotnet test "$project_path" --no-restore --no-build \
+                /p:CollectCoverage=true \
+                /p:CoverletOutputFormat=opencover \
+                /p:CoverletOutput="./TestResults/coverage/"
+            fi
+          done
+
+      # PASO 4: END: Finaliza el análisis y envía los resultados a SonarCloud
+      - name: End SonarCloud Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: '**/TestResults/coverage/coverage.xml'
+
+  # -----------------------------------------------------------
+  # JOB 2: package-and-publish (Empaquetado y Publicación)
+  # -----------------------------------------------------------
+  package-and-publish:
+    # Solo se ejecuta si el análisis de calidad (Job 1) fue exitoso
+    needs: sonar-analysis
+    runs-on: ubuntu-latest
+
+    # Usa la matriz para empaquetar los dos proyectos de dominio individualmente
+    strategy:
+      matrix:
+        project: [
+          ./ATM/ATM.Domain/ATM.Domain.csproj,
+          ./Payment/Payment.Domain/Payment.Domain.csproj
+        ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        # Se restaura solo el proyecto específico de la matriz
+        run: dotnet restore ${{ matrix.project }}
+
+      - name: Build project
+        run: dotnet build ${{ matrix.project }} --configuration Release
+
+      - name: Pack NuGet package
+        run: dotnet pack ${{ matrix.project }} --configuration Release --output ./packages/$(echo ${{ matrix.project }} | md5sum | head -c 8)
+
+      - name: Publish NuGet package to GitHub Packages
+        run: |
+            for file in $(find ./packages -name "*.nupkg"); do
+            echo "📦 Publicando paquete: $file"
+            dotnet nuget push "$file" \
+                --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+                --api-key "${{ secrets.GITHUB_TOKEN }}" \
+                --skip-duplicate
+            done
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

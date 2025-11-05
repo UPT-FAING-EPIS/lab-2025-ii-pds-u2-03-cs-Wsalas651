@@ -1,0 +1,12 @@
+C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\ATM\ATM.Domain\bin\Debug\net8.0\ATM.Domain.deps.json
+C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\ATM\ATM.Domain\bin\Debug\net8.0\ATM.Domain.dll
+C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\ATM\ATM.Domain\bin\Debug\net8.0\ATM.Domain.pdb
+C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\ATM\ATM.Domain\obj\Debug\net8.0\ATM.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\ATM\ATM.Domain\obj\Debug\net8.0\ATM.Domain.AssemblyInfoInputs.cache
+C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\ATM\ATM.Domain\obj\Debug\net8.0\ATM.Domain.AssemblyInfo.cs
+C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\ATM\ATM.Domain\obj\Debug\net8.0\ATM.Domain.csproj.CoreCompileInputs.cache
+C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\ATM\ATM.Domain\obj\Debug\net8.0\ATM.Domain.sourcelink.json
+C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\ATM\ATM.Domain\obj\Debug\net8.0\ATM.Domain.dll
+C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\ATM\ATM.Domain\obj\Debug\net8.0\refint\ATM.Domain.dll
+C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\ATM\ATM.Domain\obj\Debug\net8.0\ATM.Domain.pdb
+C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\ATM\ATM.Domain\obj\Debug\net8.0\ref\ATM.Domain.dll

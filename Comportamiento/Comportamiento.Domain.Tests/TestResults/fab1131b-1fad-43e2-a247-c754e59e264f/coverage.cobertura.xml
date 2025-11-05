@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<coverage line-rate="1" branch-rate="1" version="1.9" timestamp="1762368146" lines-covered="10" lines-valid="10" branches-covered="0" branches-valid="0">
+  <sources>
+    <source>C:\Users\ASUS\Music\PATRONES\U2\lab-2025-ii-pds-u2-03-cs-Wsalas651\Comportamiento\Comportamiento.Domain\Strategy\</source>
+  </sources>
+  <packages>
+    <package name="Comportamiento.Domain" line-rate="1" branch-rate="1" complexity="5">
+      <classes>
+        <class name="Comportamiento.Domain.Strategy.Contexto" filename="Contexto.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="EjecutarOperacion" signature="(System.Int32,System.Int32)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="13" hits="3" branch="False" />
+                <line number="14" hits="3" branch="False" />
+                <line number="15" hits="3" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(Comportamiento.Domain.Strategy.IOperacion)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="7" hits="3" branch="False" />
+                <line number="8" hits="3" branch="False" />
+                <line number="9" hits="3" branch="False" />
+                <line number="10" hits="3" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="13" hits="3" branch="False" />
+            <line number="14" hits="3" branch="False" />
+            <line number="15" hits="3" branch="False" />
+            <line number="7" hits="3" branch="False" />
+            <line number="8" hits="3" branch="False" />
+            <line number="9" hits="3" branch="False" />
+            <line number="10" hits="3" branch="False" />
+          </lines>
+        </class>
+        <class name="Comportamiento.Domain.Strategy.Multiplicar" filename="Multiplicar.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="Ejecutar" signature="(System.Int32,System.Int32)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="5" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="5" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class name="Comportamiento.Domain.Strategy.Restar" filename="Restar.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="Ejecutar" signature="(System.Int32,System.Int32)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="5" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="5" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class name="Comportamiento.Domain.Strategy.Sumar" filename="Sumar.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="Ejecutar" signature="(System.Int32,System.Int32)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="5" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="5" hits="1" branch="False" />
+          </lines>
+        </class>
+      </classes>
+    </package>
+  </packages>
+</coverage>

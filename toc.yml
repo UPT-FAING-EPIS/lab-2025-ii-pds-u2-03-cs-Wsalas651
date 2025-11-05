@@ -1,0 +1,59 @@
+items:
+- uid: ATM.Domain
+  name: ATM.Domain
+  type: Namespace
+  items:
+  - uid: ATM.Domain.ATMTransaction
+    name: ATMTransaction
+    type: Class
+  - uid: ATM.Domain.Account
+    name: Account
+    type: Class
+  - uid: ATM.Domain.Validator
+    name: Validator
+    type: Class
+  - uid: ATM.Domain.Logger
+    name: Logger
+    type: Class
+- uid: ATM.Domain.Tests
+  name: ATM.Domain.Tests
+  type: Namespace
+  items:
+  - uid: ATM.Domain.Tests.ATMTransactionTests
+    name: ATMTransactionTests
+    type: Class
+  - uid: ATM.Domain.Tests.AccountTests
+    name: AccountTests
+    type: Class
+
+- uid: Payment.Domain
+  name: Payment.Domain
+  type: Namespace
+  items:
+  - uid: Payment.Domain.PaymentProcessor
+    name: PaymentProcessor
+    type: Class
+  - uid: Payment.Domain.Invoice
+    name: Invoice
+    type: Class
+  - uid: Payment.Domain.IValidator
+    name: IValidator
+    type: Interface
+  - uid: Payment.Domain.PaymentGateway
+    name: PaymentGateway
+    type: Class
+  - uid: Payment.Domain.NotificationService
+    name: NotificationService
+    type: Class
+- uid: Payment.Domain.Tests
+  name: Payment.Domain.Tests
+  type: Namespace
+  items:
+  - uid: Payment.Domain.Tests.PaymentProcessorTests
+    name: PaymentProcessorTests
+    type: Class
+  - uid: Payment.Domain.Tests.InvoiceTests
+    name: InvoiceTests
+    type: Class
+
+memberLayout: SamePage

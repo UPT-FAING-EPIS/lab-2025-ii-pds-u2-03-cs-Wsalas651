@@ -1,0 +1,66 @@
+{
+  "metadata": [
+    {
+      "src": [
+        { "files": ["ATM/**/*.csproj"] },
+        { "files": ["Payment/**/*.csproj"] }
+      ],
+      "dest": "api"
+    }
+  ],
+  "build": {
+    "content": [
+      { "files": ["api/**.yml", "api/index.md"] },
+      { "files": ["articles/**.md"] },
+      { "files": ["index.md"] }
+    ],
+    "resource": [
+      { "files": ["**/*.png", "**/*.jpg", "**/*.svg", "**/*.woff", "**/*.woff2"] }
+    ],
+    "dest": "_site",
+    "globalMetadata": {
+      "_appTitle": "ATM & Payment Documentation",
+      "_enableSearch": true
+    },
+    "template": ["default"]
+  },
+  "toc": [
+    {
+      "uid": "ATM.Domain",
+      "name": "ATM Domain",
+      "items": [
+        { "uid": "ATM.Domain.ATMTransaction" },
+        { "uid": "ATM.Domain.Account" },
+        { "uid": "ATM.Domain.Validator" },
+        { "uid": "ATM.Domain.Logger" }
+      ]
+    },
+    {
+      "uid": "ATM.Domain.Tests",
+      "name": "ATM Domain Tests",
+      "items": [
+        { "uid": "ATM.Domain.Tests.ATMTransactionTests" },
+        { "uid": "ATM.Domain.Tests.AccountTests" }
+      ]
+    },
+    {
+      "uid": "Payment.Domain",
+      "name": "Payment Domain",
+      "items": [
+        { "uid": "Payment.Domain.PaymentProcessor" },
+        { "uid": "Payment.Domain.Invoice" },
+        { "uid": "Payment.Domain.IValidator" },
+        { "uid": "Payment.Domain.PaymentGateway" },
+        { "uid": "Payment.Domain.NotificationService" }
+      ]
+    },
+    {
+      "uid": "Payment.Domain.Tests",
+      "name": "Payment Domain Tests",
+      "items": [
+        { "uid": "Payment.Domain.Tests.PaymentProcessorTests" },
+        { "uid": "Payment.Domain.Tests.InvoiceTests" }
+      ]
+    }
+  ]
+}
